@@ -1,48 +1,68 @@
-from flask import Flask, request
-from post import getCompanyWithName, insertNewUser, insertNewChat
+from flask import Flask, request, Response
+from get import getMessagelist
+from post import insertNewUser, insertNewChat, addNewMessage
 import random
 import json
 
 app = Flask(__name__)
 
 
-@app.route('/newChat/')
-def newChat():
-    print(type(request),request)
-    data = request.args.to_dict(flat=False)
-    name = data["name"][0]
-    print(type(data),data)
-    contenido = data["content"][0]
-    res = json.loads(contenido) 
-    print(type(res),res)
-    return insertNewChat(name, res)
+@app.route('/user/create/<username>', methods=['POST'])
+# Crea usuario nuevo
+def createUser(username):
+    return insertNewUser(username)
 
-@app.route('/newUser/<name>')
-def newUser(name):
-    return insertNewUser(name)
 
-@app.route('/')
-def hello():
-    pepe = {
-        "nombre": "Luis",
-        "edad": 30
-    }
-    return pepe
+@app.route('/chat/create', methods=['POST'])
+# Crea chat nuevo
+def createChat():
+    name = request.args.get('chat_name')
+    users = request.args.getlist('users')
+    messages = request.args.getlist('messages')
+    return insertNewChat(name, users, messages)
 
-@app.route('/company/<name>')
-def getCompany(name):
-    return getCompanyWithName(name)
+
+@app.route('/chat/<chat_name>/addmessage', methods=['POST'])
+# Añade un nuevo mensaje
+def addMessage(chat_name):
+    name = chat_name
+    user = request.args.get('user')
+    message = request.args.get('message')
+    return addNewMessage(name, user, message)
+
+
+@app.route('/chat/<chat_name>/list', methods=['GET'])
+def messagesFromChat(chat_name):
+    # Devuelve lista de mensajes de un chat
+    return getMessagelist(chat_name)
+
 
 app.run("0.0.0.0", 3000, debug=True)
 
 
-
-
-
-
-
-
+# MIO
 '''
+@app.route('/newUser/<name>', methods=['POST'])
+def newUser(name):
+    return insertNewUser(name)
+
+
+@app.route('/newChat/', methods=['POST'])
+def newChat():
+    data = request.args.to_dict(flat=False)
+    print(type(data), data)
+    name = data["name"][0]
+    contenido = data["content"][0]
+    content = json.loads(contenido)
+    return insertFullChat(name, content)
+'''
+
+# DE MARC
+'''
+@app.route('/company/<name>')
+def getCompany(name):
+    return getCompanyWithName(name)
+
 def controllerFn(): return {"hola": "pepe"}
 
 
