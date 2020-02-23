@@ -1,5 +1,5 @@
 from flask import Flask, request, Response
-from get import getMessagelist
+from get import getMessagelist, getSentimentFromChat
 from post import insertNewUser, insertNewChat, addNewMessage
 import random
 import json
@@ -36,16 +36,25 @@ def messagesFromChat(chat_name):
     return getMessagelist(chat_name)
 
 
+@app.route('/chat/<chat_name>/sentiment', methods=['GET'])
+def sentimentFromChat(chat_name):
+    # Devuelve lista de mensajes de un chat
+    return getSentimentFromChat(chat_name)
+
+
+'''
+- (GET) `/chat/<chat_id>/sentiment`
+  - **Purpose:** Analyze messages from `chat_id`. Use `NLTK` sentiment analysis package for this task
+  - **Returns:** json with all sentiments from messages in the chat
+'''
+
+
 app.run("0.0.0.0", 3000, debug=True)
 
 
 # MIO
+
 '''
-@app.route('/newUser/<name>', methods=['POST'])
-def newUser(name):
-    return insertNewUser(name)
-
-
 @app.route('/newChat/', methods=['POST'])
 def newChat():
     data = request.args.to_dict(flat=False)
@@ -61,6 +70,7 @@ def newChat():
 @app.route('/company/<name>')
 def getCompany(name):
     return getCompanyWithName(name)
+
 
 def controllerFn(): return {"hola": "pepe"}
 
