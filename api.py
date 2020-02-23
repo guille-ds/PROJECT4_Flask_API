@@ -18,8 +18,7 @@ def createUser(username):
 def createChat():
     name = request.args.get('chat_name')
     users = request.args.getlist('users')
-    messages = request.args.getlist('messages')
-    return insertNewChat(name, users, messages)
+    return insertNewChat(name, users)
 
 
 @app.route('/chat/<chat_name>/addmessage', methods=['POST'])

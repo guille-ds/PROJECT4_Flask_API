@@ -4,11 +4,7 @@ from flask import Flask, request
 # Connect to the database
 client = MongoClient("mongodb://localhost:27017/apiflaskDB")
 db = client.get_database()
-'''
-- (GET) `/chat/<chat_id>/list`
-  - **Purpose:** Get all messages from `chat_id`
-  - **Returns:** json array with all messages from this `chat_id`
-'''
+
 
 def getMessagelist(name):
     chatNames = db.chats.distinct("name")
@@ -17,8 +13,10 @@ def getMessagelist(name):
         print(claim)
     else:
         r = [x["message"] for x in db.messages.find({"chat_name":name})]
-        claim = f'200 - "{name}" chat found - message_id = {r}'
+        claim = f'200 - "{name}" chat found - messages = {r}'
         print(claim)
     return claim
+
+
 
 

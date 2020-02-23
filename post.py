@@ -11,23 +11,31 @@ db = client.get_database()
 def insertNewUser(name):
     # Inserta un nuevo usuario en la colección "users"
     users = db.users
-    r = users.insert_one({"name": name}).inserted_id
-    #res = db.test.find_one({"name": name})
-    claim = f'200 - New user {name} inserted succesfully - user_id = {r}'
-    print(claim)
+    userNames = users.distinct("name")
+    if name in userNames:
+        claim = ("User already exist")
+        print(claim)
+    else:
+        r = users.insert_one({"name": name}).inserted_id
+        claim = f'200 - New user {name} inserted succesfully - user_id = {r}'
+        print(claim)
     return claim
 
 
-def insertNewChat(name, arrayUsers, messages):
+def insertNewChat(name, arrayUsers):
     # Inserta un nuevo chat en la colección "chats"
     chat = db.chats
-    kind = ["Group_Chat" if len(arrayUsers) > 2 else "Two_Chat"][0]
-    r = chat.insert_one({"kind": kind,
-                         "name": name,
-                         "users": arrayUsers,
-                         "messages": messages}).inserted_id
-    claim = f'200 - New chat "{name}" inserted succesfully - chat_id = {r}'
-    print(claim)
+    chatNames = chat.distinct("name")
+    if name in chatNames:
+        claim = ("Chat already exist")
+        print(claim)
+    else:
+        kind = ["Group_Chat" if len(arrayUsers) > 2 else "Two_Chat"][0]
+        r = chat.insert_one({"kind": kind,
+                             "name": name,
+                             "users": arrayUsers}).inserted_id
+        claim = f'200 - New chat "{name}" inserted succesfully - chat_id = {r}'
+        print(claim)
     return claim
 
 
@@ -35,7 +43,7 @@ def addNewMessage(name, user, message):
     # Inserta un nuevo mensaje en el chat con nombre "name" si el usuario pertenece al chat
     chatUsers = db.chats.find_one({"name": name})["users"]
     if user not in chatUsers:
-        claim = ("User is not part the chat")
+        claim = ("User is not part of the chat")
         print(claim)
     else:
         messages = db.messages
