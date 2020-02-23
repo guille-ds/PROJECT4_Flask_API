@@ -55,7 +55,6 @@ def addNewMessage(name, user, message):
     return claim
 
 
-'''
 def insertFullChat(name, contenido):
     # Crea un chat en la colección "chats" con nombre "name"
     chats = db.chats
@@ -70,6 +69,8 @@ def insertFullChat(name, contenido):
     print(claim)
     return claim
 
+
+'''
 def getCompanyWithName(name):
     companies = client.get_default_database()["companies"]
     namereg = re.compile(name, re.IGNORECASE)

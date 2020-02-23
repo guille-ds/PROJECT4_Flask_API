@@ -1,6 +1,7 @@
 from flask import Flask, request, Response
-from get import getMessagelist, getSentimentFromChat
+from get import getMessagelist
 from post import insertNewUser, insertNewChat, addNewMessage
+from sentiment import getSentimentFromChat
 import random
 import json
 
