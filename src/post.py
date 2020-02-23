@@ -23,7 +23,7 @@ def insertNewUser(name):
 
 
 def insertNewChat(name, arrayUsers):
-    # Inserta un nuevo chat en la colección "chats"
+    # Inserta un nuevo chat vacío en la colección "chats"
     chat = db.chats
     chatNames = chat.distinct("name")
     if name in chatNames:
@@ -56,7 +56,8 @@ def addNewMessage(name, user, message):
 
 
 def insertFullChat(name, contenido):
-    # Crea un chat en la colección "chats" con nombre "name"
+    # Crea un chat en la colección "chats" con nombre "name" y con todos sus mensajes.
+    # Cuenta el número de usuarios y establece el tipo de chat en función de ello.
     chats = db.chats
     listUsers = [e for e in contenido.keys()]
     kind = ["Group_Chat" if len(listUsers) > 2 else "Two_Chat"][0]
@@ -68,15 +69,3 @@ def insertFullChat(name, contenido):
     claim = '200 - Todo ok - New chat inserted succesfully'
     print(claim)
     return claim
-
-
-'''
-def getCompanyWithName(name):
-    companies = client.get_default_database()["companies"]
-    namereg = re.compile(name, re.IGNORECASE)
-    print(namereg)
-    query = companies.find_one({"name": namereg})
-    if not query:
-        raise ValueError("Company not found")
-    return dumps(query)
-'''

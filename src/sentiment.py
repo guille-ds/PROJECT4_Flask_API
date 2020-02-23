@@ -11,8 +11,6 @@ client = MongoClient("mongodb://localhost:27017/apiflaskDB")
 db = client.get_database()
 
 sia = SentimentIntensityAnalyzer()
-sentence = "I do not like you"
-sia.polarity_scores(sentence)
 
 
 def getSentimentFromChat(chatName):
@@ -26,9 +24,7 @@ def getSentimentFromChat(chatName):
         for m in chatMessages:
             mess = m['message']
             sentim = TextBlob(mess).sentiment
-            print(sentim)
             sentim2 = sia.polarity_scores(mess)
-            print(sentim2)
             all[mess] = sentim, sentim2
         out = json.dumps(all)
         print(out)
