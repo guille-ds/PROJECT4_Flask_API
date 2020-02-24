@@ -1,7 +1,6 @@
 from pymongo import MongoClient
 from flask import Flask, request
 from bson.json_util import dumps
-import re
 
 # Connect to the database
 client = MongoClient("mongodb://localhost:27017/apiflaskDB")

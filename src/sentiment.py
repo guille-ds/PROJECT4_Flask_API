@@ -4,7 +4,7 @@ import json
 from textblob import TextBlob
 import nltk
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
-
+nltk.download('vader_lexicon')
 
 # Connect to the database
 client = MongoClient("mongodb://localhost:27017/apiflaskDB")

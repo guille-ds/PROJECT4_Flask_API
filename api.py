@@ -6,6 +6,7 @@ from src.recom import recommender
 import random
 import json
 
+
 app = Flask(__name__)
 
 
@@ -40,7 +41,7 @@ def messagesFromChat(chat_name):
 
 @app.route('/chat/<chat_name>/sentiment', methods=['GET'])
 def sentimentFromChat(chat_name):
-    # Devuelve lista de mensajes de un chat
+    # Devuelve lista de sentimientos de un chat
     return getSentimentFromChat(chat_name)
 
 
