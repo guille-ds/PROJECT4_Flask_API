@@ -1,7 +1,8 @@
 from flask import Flask, request, Response
-from src.get import getMessagelist
+from src.get import getMessagelist, getUserMessages, recommendUser
 from src.post import insertNewUser, insertNewChat, addNewMessage, insertFullChat
 from src.sentiment import getSentimentFromChat
+from src.recom import recommender
 import random
 import json
 
@@ -41,6 +42,23 @@ def messagesFromChat(chat_name):
 def sentimentFromChat(chat_name):
     # Devuelve lista de mensajes de un chat
     return getSentimentFromChat(chat_name)
+
+
+@app.route('/user/messages/<username>', methods=['GET'])
+def userMessages(username):
+    # Devuelve lista de mensajes de un usuario
+    out = getUserMessages(username)
+    docs = {}
+    docs[username] = out
+    claim = f'200 - All messages from {username} - messages = {docs}'
+    print(claim)
+    return out
+
+
+@app.route('/recommend/<username>', methods=['GET'])
+def recommend(username):
+    # Devuelve usuarios recomendados para uno dado
+    return recommendUser(username)
 
 
 @app.route('/newChat/', methods=['POST'])
